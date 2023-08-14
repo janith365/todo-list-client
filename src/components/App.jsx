@@ -9,9 +9,8 @@ export default function App() {
   const [toDoItem, setToDoItem] = useState("");
   useEffect(() => {
     async function getItems() {
-      const response = await fetch(process.env.REACT_APP_SERVER_URL);
-      const jsonResponse = await response.json();
-      setItems(jsonResponse.map((item) => item.name));
+      const response = await axios.get(process.env.REACT_APP_SERVER_URL);
+      setItems(response.data.map((item) => item.name));
     }
     getItems();
   }, []);
