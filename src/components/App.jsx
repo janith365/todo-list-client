@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Heading from "./Heading";
 import ToDoItems from "./ToDoItems";
 import ToDoForm from "./ToDoForm";
+import axios from "axios";
 
 export default function App() {
   const [items, setItems] = useState([]);
@@ -21,26 +22,18 @@ export default function App() {
   }
 
   async function addItem() {
-    const options = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ itemName: toDoItem })
-    };
-    const response = await fetch(process.env.REACT_APP_SERVER_URL, options);
-    if (response.ok) {
+    const data = { itemName: toDoItem };
+    const response = await axios.post(process.env.REACT_APP_SERVER_URL, data);
+    if (response.status === 200) {
       setItems((prevItems) => [...prevItems, toDoItem]);
       setToDoItem("");
     }
   }
 
   async function deleteItem(id) {
-    const options = {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ itemName: id })
-    };
-    const response = await fetch(process.env.REACT_APP_SERVER_URL, options);
-    if (response.ok) {
+    const config = { data: { itemName: id } };
+    const response = await axios.delete(process.env.REACT_APP_SERVER_URL, config);
+    if (response.status === 200) {
       setItems(items.filter((i) => i !== id));
     }
   }
