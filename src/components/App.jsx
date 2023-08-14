@@ -8,7 +8,7 @@ export default function App() {
   const [toDoItem, setToDoItem] = useState("");
   useEffect(() => {
     async function getItems() {
-      const response = await fetch(`http://localhost:5000/`);
+      const response = await fetch(process.env.REACT_APP_SERVER_URL);
       const jsonResponse = await response.json();
       setItems(jsonResponse.map((item) => item.name));
     }
@@ -26,7 +26,7 @@ export default function App() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ itemName: toDoItem })
     };
-    const response = await fetch("http://localhost:5000/", options);
+    const response = await fetch(process.env.REACT_APP_SERVER_URL, options);
     if (response.ok) {
       setItems((prevItems) => [...prevItems, toDoItem]);
       setToDoItem("");
@@ -39,7 +39,7 @@ export default function App() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ itemName: id })
     };
-    const response = await fetch("http://localhost:5000/", options);
+    const response = await fetch(process.env.REACT_APP_SERVER_URL, options);
     if (response.ok) {
       setItems(items.filter((i) => i !== id));
     }
